@@ -1,62 +1,87 @@
 import { DocHeader } from "@/components/docs/DocHeader";
 import { CodeBlock } from "@/components/docs/CodeBlock";
+import { DocCBlock } from "@/components/docs/DocCBlock";
 import { Callout } from "@/components/docs/Callout";
 import { KeyTakeaways } from "@/components/docs/KeyTakeaways";
+import { PageNavigation } from "@/components/docs/PageNavigation";
+import { ComparisonTable } from "@/components/docs/ComparisonTable";
+import { FlowChart } from "@/components/docs/FlowChart";
+import { findCurrentPage } from "@/lib/nav-utils";
+import { getScrapedContent } from "@/lib/use-scraped-content";
 
 export default async function IntroductionToSwift() {
-  const codeExample1 = `// Variables - values that can change
-var greeting = "Hello, World!"
-greeting = "Hello, Swift!" // ✅ Allowed
+  const nav = findCurrentPage("/docs/swift-language/001-swift-fundamentals/introduction-to-swift");
+  const scraped = await getScrapedContent("introduction-to-swift");
+  
+  const codeExample1 = `/// Constants and variables for tracking login attempts.
+///
+/// This example demonstrates the difference between constants (let)
+/// and variables (var) in Swift.
+let maximumNumberOfLoginAttempts = 10
+var currentLoginAttempt = 0`;
 
-// Constants - values that cannot change
-let pi = 3.14159
-// pi = 3.14 // ❌ Error: Cannot assign to value: 'pi' is a 'let' constant
-
-// Type annotation (explicit)
-let age: Int = 25
-let name: String = "Alice"
-
-// Type inference (implicit)
-let inferredAge = 25 // Swift infers this as Int
-let inferredName = "Bob" // Swift infers this as String`;
-
-  const codeExample2 = `// Basic arithmetic operators
+  const codeExample2 = `/// Demonstrates Swift's basic operators.
+///
+/// Swift provides a comprehensive set of operators for arithmetic,
+/// comparison, logical operations, and more.
+///
+/// ## Arithmetic Operators
+/// Basic mathematical operations on numeric types.
 let sum = 10 + 5        // 15
 let difference = 10 - 5 // 5
 let product = 10 * 5    // 50
 let quotient = 10 / 5   // 2
 let remainder = 10 % 3  // 1
 
-// Comparison operators
+/// ## Comparison Operators
+/// Compare two values and return a Boolean result.
 let isEqual = (5 == 5)      // true
 let isNotEqual = (5 != 3)   // true
 let isGreater = (10 > 5)    // true
 let isLess = (3 < 7)        // true
 
-// Logical operators
+/// ## Logical Operators
+/// Combine Boolean values using logical AND, OR, and NOT.
 let andResult = true && false  // false
 let orResult = true || false   // true
 let notResult = !true          // false
 
-// Range operators
+/// ## Range Operators
+/// Create ranges of values for iteration and indexing.
 let closedRange = 1...5        // 1, 2, 3, 4, 5
 let halfOpenRange = 1..<5      // 1, 2, 3, 4
 
-// Nil-coalescing operator
+/// ## Nil-Coalescing Operator
+/// Provides a default value when an optional is nil.
+///
+/// - Parameter optionalValue: An optional integer that may be nil
+/// - Returns: The unwrapped value or the default value (0)
 let optionalValue: Int? = nil
 let defaultValue = optionalValue ?? 0  // Returns 0 if optionalValue is nil`;
 
-  const codeExample3 = `// Type safety - Swift prevents type mismatches
+  const codeExample3 = `/// Demonstrates Swift's type safety and type inference.
+///
+/// Swift is a type-safe language that prevents type mismatches at compile time.
+/// It also uses type inference to automatically determine types from context.
+///
+/// > Note: Type safety helps catch errors before your code runs.
+///
+/// ## Type Safety
+/// Swift prevents accidental type mismatches.
 let number: Int = 42
 // let text: String = number // ❌ Error: Cannot convert value
 
-// Type inference with different types
+/// ## Type Inference
+/// Swift automatically infers types from initial values.
 let integer = 42           // Inferred as Int
 let decimal = 3.14         // Inferred as Double
 let text = "Hello"         // Inferred as String
 let isActive = true        // Inferred as Bool
 
-// Explicit type conversion when needed
+/// ## Explicit Type Conversion
+/// Convert between types using initializers.
+///
+/// - Returns: Converted values of the target type
 let stringFromInt = String(42)        // "42"
 let intFromString = Int("42")        // Optional(42)
 let doubleFromInt = Double(42)       // 42.0`;
@@ -103,47 +128,232 @@ let doubleFromInt = Double(42)       // 42.0`;
 
       <h2>Constants and Variables</h2>
 
+      {scraped?.sections.find(s => s.heading === "Constants and Variables")?.content && (
+        <p>
+          {scraped.sections.find(s => s.heading === "Constants and Variables")?.content.split('\n\n')[0]}
+        </p>
+      )}
+
       <p>
-        Swift uses two keywords to declare values:
+        Swift uses two keywords to declare values. Understanding when to use each is fundamental to writing good Swift code:
       </p>
 
-      <ul>
-        <li><strong><code>let</code></strong> - Declares a constant (immutable value)</li>
-        <li><strong><code>var</code></strong> - Declares a variable (mutable value)</li>
-      </ul>
-
-      <CodeBlock
-        code={codeExample1}
-        lang="swift"
-        filename="ConstantsAndVariables.swift"
-        showLineNumbers={true}
+      <ComparisonTable
+        title="Constants vs Variables"
+        headers={["Aspect", "let (Constants)", "var (Variables)", "When to Use"]}
+        rows={[
+          {
+            feature: "Mutability",
+            option1: (
+              <>
+                <span className="text-fg">Immutable</span>
+                <br />
+                <span className="text-fg-subtle text-xs">
+                  Cannot be changed after initialization
+                </span>
+              </>
+            ),
+            option2: (
+              <>
+                <span className="text-fg">Mutable</span>
+                <br />
+                <span className="text-fg-subtle text-xs">
+                  Can be changed after initialization
+                </span>
+              </>
+            ),
+            option3: (
+              <>
+                <code>let</code>: Default choice, use for most values
+                <br />
+                <code>var</code>: Only when value must change
+              </>
+            ),
+          },
+          {
+            feature: "Safety",
+            option1: (
+              <>
+                <span className="text-fg">Prevents accidental changes</span>
+                <br />
+                <span className="text-fg-subtle text-xs">
+                  Compiler enforces immutability
+                </span>
+              </>
+            ),
+            option2: (
+              <>
+                <span className="text-fg-muted">Allows changes</span>
+                <br />
+                <span className="text-fg-subtle text-xs">
+                  More prone to bugs from unexpected mutations
+                </span>
+              </>
+            ),
+            option3: (
+              <>
+                <code>let</code>: Safer, thread-safe by default
+              </>
+            ),
+          },
+          {
+            feature: "Performance",
+            option1: (
+              <>
+                <span className="text-fg">Better optimization</span>
+                <br />
+                <span className="text-fg-subtle text-xs">
+                  Compiler can optimize immutable values
+                </span>
+              </>
+            ),
+            option2: (
+              <>
+                <span className="text-fg-muted">Standard performance</span>
+              </>
+            ),
+            option3: (
+              <>
+                <code>let</code>: Slightly better performance
+              </>
+            ),
+          },
+          {
+            feature: "Example",
+            option1: (
+              <>
+                <code className="text-accent text-xs">let pi = 3.14159</code>
+                <br />
+                <code className="text-accent text-xs">let name = "Alice"</code>
+              </>
+            ),
+            option2: (
+              <>
+                <code className="text-accent text-xs">var count = 0</code>
+                <br />
+                <code className="text-accent text-xs">var currentUser: User?</code>
+              </>
+            ),
+            option3: (
+              <>
+                Use <code>let</code> for values that don't change
+                <br />
+                Use <code>var</code> for counters, state, or optional values
+              </>
+            ),
+          },
+        ]}
+        caption="Swift's philosophy: prefer immutability. Use let by default, and only use var when you truly need mutability. This makes code safer, clearer, and easier to reason about."
       />
 
+      <h3>Declaring Constants and Variables</h3>
+
+      {scraped?.sections.find(s => s.heading === "Declaring Constants and Variables")?.content && (
+        <>
+          <p>
+            {scraped.sections.find(s => s.heading === "Declaring Constants and Variables")?.content.split('\n\n').slice(0, 3).join('\n\n')}
+          </p>
+          <DocCBlock
+            code={codeExample1}
+            lang="swift"
+            showLineNumbers={true}
+            showDocumentation={true}
+          />
+        </>
+      )}
+
       <Callout kind="warning" title="Best Practice">
-        Prefer <code>let</code> over <code>var</code> whenever possible. Using constants makes your code safer and more predictable by preventing accidental modifications.
+        If a stored value in your code won't change, always declare it as a constant with the <code>let</code> keyword. Use variables only for storing values that change.
       </Callout>
+
+      <h3>Type Annotations</h3>
+
+      {scraped?.sections.find(s => s.heading === "Type Annotations")?.content && (
+        <>
+          <p>
+            {scraped.sections.find(s => s.heading === "Type Annotations")?.content.split('\n\n').slice(0, 4).join('\n\n')}
+          </p>
+          {scraped.sections.find(s => s.heading === "Type Annotations")?.codeExamples.map((ex, idx) => (
+            <CodeBlock
+              key={idx}
+              code={ex.code}
+              lang={ex.language || "swift"}
+              showLineNumbers={true}
+            />
+          ))}
+        </>
+      )}
+
+      <h3>Naming Constants and Variables</h3>
+
+      {scraped?.sections.find(s => s.heading === "Naming Constants and Variables")?.content && (
+        <>
+          <p>
+            Constant and variable names can contain almost any character, including Unicode characters:
+          </p>
+          {scraped.sections.find(s => s.heading === "Naming Constants and Variables")?.codeExamples.map((ex, idx) => (
+            <CodeBlock
+              key={idx}
+              code={ex.code}
+              lang={ex.language || "swift"}
+              showLineNumbers={true}
+            />
+          ))}
+        </>
+      )}
 
       <h2>Type Safety and Type Inference</h2>
 
-      <p>
-        Swift is a <strong>type-safe</strong> language, meaning every variable and constant has a specific type, and Swift ensures you use values correctly. This prevents many common programming errors.
-      </p>
+      {scraped?.sections.find(s => s.heading === "Type Safety and Type Inference")?.content && (
+        <>
+          <p>
+            {scraped.sections.find(s => s.heading === "Type Safety and Type Inference")?.content.split('\n\n').slice(0, 3).join('\n\n')}
+          </p>
+          {scraped.sections.find(s => s.heading === "Type Safety and Type Inference")?.codeExamples.map((ex, idx) => (
+            <CodeBlock
+              key={idx}
+              code={ex.code}
+              lang={ex.language || "swift"}
+              showLineNumbers={true}
+            />
+          ))}
+        </>
+      )}
 
-      <CodeBlock
-        code={codeExample3}
-        lang="swift"
-        filename="TypeSafety.swift"
-        showLineNumbers={true}
-      />
+      <h2>Numeric Type Conversion</h2>
 
-      <h3>Type Inference</h3>
-      <p>
-        Swift can automatically infer the type of a variable or constant based on its initial value. This means you don't always need to explicitly declare the type:
-      </p>
+      {scraped?.sections.find(s => s.heading === "Integer Conversion")?.content && (
+        <>
+          <p>
+            {scraped.sections.find(s => s.heading === "Integer Conversion")?.content.split('\n\n').slice(0, 2).join('\n\n')}
+          </p>
+          {scraped.sections.find(s => s.heading === "Integer Conversion")?.codeExamples.map((ex, idx) => (
+            <CodeBlock
+              key={idx}
+              code={ex.code}
+              lang={ex.language || "swift"}
+              showLineNumbers={true}
+            />
+          ))}
+        </>
+      )}
 
-      <p>
-        Type inference makes code cleaner and easier to read while maintaining full type safety at compile time.
-      </p>
+      {scraped?.sections.find(s => s.heading === "Integer and Floating-Point Conversion")?.content && (
+        <>
+          <h3>Integer and Floating-Point Conversion</h3>
+          <p>
+            {scraped.sections.find(s => s.heading === "Integer and Floating-Point Conversion")?.content.split('\n\n')[0]}
+          </p>
+          {scraped.sections.find(s => s.heading === "Integer and Floating-Point Conversion")?.codeExamples.map((ex, idx) => (
+            <CodeBlock
+              key={idx}
+              code={ex.code}
+              lang={ex.language || "swift"}
+              showLineNumbers={true}
+            />
+          ))}
+        </>
+      )}
 
       <h2>Basic Operators</h2>
 
@@ -151,11 +361,12 @@ let doubleFromInt = Double(42)       // 42.0`;
         Swift provides a comprehensive set of operators for performing operations:
       </p>
 
-      <CodeBlock
+      <DocCBlock
         code={codeExample2}
         lang="swift"
         filename="Operators.swift"
         showLineNumbers={true}
+        showDocumentation={true}
       />
 
       <h3>Operator Categories</h3>
@@ -177,6 +388,11 @@ let doubleFromInt = Double(42)       // 42.0`;
           "Playgrounds provide an interactive environment for learning and experimenting with Swift.",
         ]}
         mentalModel="Think of constants (let) as values that are set once and never change, while variables (var) are containers that can hold different values over time. Swift's type system acts as a safety net, catching errors before your code runs."
+      />
+
+      <PageNavigation
+        previous={nav?.previous ? { title: nav.previous.title, href: nav.previous.href } : undefined}
+        next={nav?.next ? { title: nav.next.title, href: nav.next.href } : undefined}
       />
     </>
   );

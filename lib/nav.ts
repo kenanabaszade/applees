@@ -68,6 +68,41 @@ export const NAV: NavCategory[] = [
             href: "/docs/swift-language/001-swift-fundamentals/object-oriented-programming",
             free: true,
           },
+          {
+            title: "Advanced Swift",
+            href: "/docs/swift-language/001-swift-fundamentals/advanced-swift",
+            free: true,
+          },
+          {
+            title: "Concurrency",
+            href: "/docs/swift-language/001-swift-fundamentals/concurrency",
+            free: true,
+          },
+          {
+            title: "Nested Types",
+            href: "/docs/swift-language/001-swift-fundamentals/nested-types",
+            free: true,
+          },
+          {
+            title: "Macros",
+            href: "/docs/swift-language/001-swift-fundamentals/macros",
+            free: true,
+          },
+          {
+            title: "Opaque Types",
+            href: "/docs/swift-language/001-swift-fundamentals/opaque-types",
+            free: true,
+          },
+          {
+            title: "Memory Safety",
+            href: "/docs/swift-language/001-swift-fundamentals/memory-safety",
+            free: true,
+          },
+          {
+            title: "Advanced Operators",
+            href: "/docs/swift-language/001-swift-fundamentals/advanced-operators",
+            free: true,
+          },
         ],
       },
       {

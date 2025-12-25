@@ -1,10 +1,22 @@
 import { DocHeader } from "@/components/docs/DocHeader";
 import { CodeBlock } from "@/components/docs/CodeBlock";
+import { DocCBlock } from "@/components/docs/DocCBlock";
 import { Callout } from "@/components/docs/Callout";
 import { KeyTakeaways } from "@/components/docs/KeyTakeaways";
+import { PageNavigation } from "@/components/docs/PageNavigation";
+import { ComparisonTable } from "@/components/docs/ComparisonTable";
+import { FlowChart } from "@/components/docs/FlowChart";
+import { findCurrentPage } from "@/lib/nav-utils";
 
 export default async function ControlFlow() {
-  const codeExample1 = `// Basic if-else
+  const nav = findCurrentPage("/docs/swift-language/001-swift-fundamentals/control-flow");
+  const codeExample1 = `/// Demonstrates conditional statements in Swift.
+///
+/// Swift provides several ways to make decisions in your code,
+/// including if-else statements, optional binding, and guard statements.
+///
+/// ## Basic If-Else
+/// Simple conditional execution based on a Boolean expression.
 let temperature = 30
 if temperature > 25 {
     print("It's hot outside")
@@ -12,7 +24,10 @@ if temperature > 25 {
     print("It's cool outside")
 }
 
-// Multiple conditions
+/// ## Multiple Conditions
+/// Chain multiple conditions using else-if.
+///
+/// - Parameter score: A numeric score value
 let score = 85
 if score >= 90 {
     print("Excellent!")
@@ -24,7 +39,10 @@ if score >= 90 {
     print("Keep trying!")
 }
 
-// Optional binding with if let
+/// ## Optional Binding with If-Let
+/// Safely unwrap optionals and use their values conditionally.
+///
+/// - Parameter optionalName: An optional string that may contain a name
 var optionalName: String? = "Alice"
 if let name = optionalName {
     print("Hello, \\(name)!")
@@ -32,7 +50,12 @@ if let name = optionalName {
     print("No name provided")
 }
 
-// Guard statement - early exit
+/// ## Guard Statement
+/// Early exit pattern for cleaner code flow.
+///
+/// - Parameter name: An optional string that may contain a name
+///
+/// > Note: Guard statements require an early return or throw in the else clause.
 func greet(name: String?) {
     guard let name = name else {
         print("No name provided")
@@ -41,7 +64,16 @@ func greet(name: String?) {
     print("Hello, \\(name)!")
 }`;
 
-  const codeExample2 = `// Switch with cases
+  const codeExample2 = `/// Demonstrates Swift's powerful switch statement.
+///
+/// Swift's switch statement is more powerful than in many languages.
+/// It supports pattern matching, ranges, tuples, and doesn't require
+/// explicit break statements.
+///
+/// ## Switch with Cases
+/// Match against specific string values.
+///
+/// - Parameter grade: A letter grade string
 let grade = "A"
 switch grade {
 case "A":
@@ -56,7 +88,10 @@ default:
     print("Needs improvement")
 }
 
-// Switch with ranges
+/// ## Switch with Ranges
+/// Match against numeric ranges using the range operators.
+///
+/// - Parameter score: A numeric score value
 let score = 85
 switch score {
 case 90...100:
@@ -69,7 +104,12 @@ default:
     print("F")
 }
 
-// Switch with tuples
+/// ## Switch with Tuples
+/// Match against tuple values with pattern matching.
+///
+/// - Parameter point: A tuple representing (x, y) coordinates
+///
+/// > Note: The underscore (_) is a wildcard that matches any value.
 let point = (1, 1)
 switch point {
 case (0, 0):
@@ -84,30 +124,44 @@ default:
     print("Outside the box")
 }`;
 
-  const codeExample3 = `// For-in loop with range
+  const codeExample3 = `/// Demonstrates different types of loops in Swift.
+///
+/// Swift provides several loop constructs for iterating over collections
+/// and repeating code execution.
+///
+/// ## For-In Loop with Range
+/// Iterate over a range of numbers.
 for number in 1...5 {
     print(number)  // 1, 2, 3, 4, 5
 }
 
-// For-in loop with array
+/// ## For-In Loop with Array
+/// Iterate over array elements directly.
 let names = ["Alice", "Bob", "Charlie"]
 for name in names {
     print("Hello, \\(name)!")
 }
 
-// For-in loop with dictionary
+/// ## For-In Loop with Dictionary
+/// Iterate over key-value pairs in a dictionary.
 let scores = ["Alice": 95, "Bob": 87, "Charlie": 92]
 for (name, score) in scores {
     print("\\(name): \\(score)")
 }
 
-// For-in loop with indices
+/// ## For-In Loop with Indices
+/// Iterate over array indices when you need both index and value.
+///
+/// > Note: Consider using \`enumerated()\` for a cleaner approach.
 let fruits = ["Apple", "Banana", "Orange"]
 for index in 0..<fruits.count {
     print("\\(index): \\(fruits[index])")
 }
 
-// While loop
+/// ## While Loop
+/// Execute code while a condition is true.
+///
+/// > Warning: Ensure the condition eventually becomes false to avoid infinite loops.
 var count = 5
 while count > 0 {
     print(count)
@@ -115,17 +169,28 @@ while count > 0 {
 }
 // Output: 5, 4, 3, 2, 1
 
-// Repeat-while loop (executes at least once)
+/// ## Repeat-While Loop
+/// Execute code at least once, then check the condition.
+///
+/// > Note: The condition is checked after each iteration, unlike while loops.
 var number = 0
 repeat {
     print(number)
     number += 1
 } while number < 5`;
 
-  const codeExample4 = `// Control transfer statements
+  const codeExample4 = `/// Demonstrates control transfer statements in Swift.
+///
+/// Control transfer statements change the order of execution in your code,
+/// allowing you to skip iterations, exit loops early, or transfer control
+/// to labeled statements.
+///
+/// ## Continue Statement
+/// Skip to the next iteration of a loop.
+///
+/// > Note: Continue only affects the innermost loop.
 let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-// Continue - skip to next iteration
 for number in numbers {
     if number % 2 == 0 {
         continue  // Skip even numbers
@@ -133,7 +198,10 @@ for number in numbers {
     print(number)  // Prints: 1, 3, 5, 7, 9
 }
 
-// Break - exit loop early
+/// ## Break Statement
+/// Exit a loop immediately.
+///
+/// > Warning: Break only exits the innermost loop. Use labeled statements for nested loops.
 for number in numbers {
     if number > 5 {
         break  // Exit when number > 5
@@ -141,7 +209,11 @@ for number in numbers {
     print(number)  // Prints: 1, 2, 3, 4, 5
 }
 
-// Labeled statements
+/// ## Labeled Statements
+/// Use labels to control which loop to break or continue.
+///
+/// - Parameter outerLoop: Label for the outer loop
+/// - Parameter innerLoop: Label for the inner loop
 outerLoop: for i in 1...3 {
     innerLoop: for j in 1...3 {
         if i * j == 6 {
@@ -173,11 +245,112 @@ outerLoop: for i in 1...3 {
 
       <h3>if, else, and else if</h3>
 
-      <CodeBlock
+      <p>
+        Conditional statements allow your code to make decisions and execute different code paths based on conditions. Swift provides several ways to handle conditionals, each suited for different scenarios.
+      </p>
+
+      <DocCBlock
         code={codeExample1}
         lang="swift"
         filename="Conditionals.swift"
         showLineNumbers={true}
+        showDocumentation={true}
+      />
+
+      <ComparisonTable
+        title="Conditional Statements Comparison"
+        headers={["Statement", "Use Case", "Syntax", "Best For"]}
+        rows={[
+          {
+            feature: "if-else",
+            option1: (
+              <>
+                Simple true/false decisions
+                <br />
+                <span className="text-fg-subtle text-xs">
+                  One or two branches
+                </span>
+              </>
+            ),
+            option2: (
+              <>
+                <code className="text-accent text-xs">if condition {"{"} {"}"} else {"{"} {"}"}</code>
+              </>
+            ),
+            option3: (
+              <>
+                Simple conditions, early returns
+              </>
+            ),
+          },
+          {
+            feature: "if-let",
+            option1: (
+              <>
+                Optional unwrapping
+                <br />
+                <span className="text-fg-subtle text-xs">
+                  Safely unwrap and use optional
+                </span>
+              </>
+            ),
+            option2: (
+              <>
+                <code className="text-accent text-xs">if let value = optional {"{"} {"}"}</code>
+              </>
+            ),
+            option3: (
+              <>
+                Handling optionals, safe unwrapping
+              </>
+            ),
+          },
+          {
+            feature: "guard",
+            option1: (
+              <>
+                Early exit pattern
+                <br />
+                <span className="text-fg-subtle text-xs">
+                  Validate and exit early if invalid
+                </span>
+              </>
+            ),
+            option2: (
+              <>
+                <code className="text-accent text-xs">guard condition else {"{"} return {"}"}</code>
+              </>
+            ),
+            option3: (
+              <>
+                Input validation, preconditions
+              </>
+            ),
+          },
+          {
+            feature: "switch",
+            option1: (
+              <>
+                Multiple cases, pattern matching
+                <br />
+                <span className="text-fg-subtle text-xs">
+                  Exhaustive, powerful pattern matching
+                </span>
+              </>
+            ),
+            option2: (
+              <>
+                <code className="text-accent text-xs">switch value {"{"} case .x: {"}"}</code>
+              </>
+            ),
+            option3: (
+              <>
+                Enums, multiple values, ranges
+              </>
+            ),
+          },
+        ]}
+        caption="Choose the right conditional based on your needs. guard is excellent for validation, if-let for optionals, and switch for multiple cases."
       />
 
       <h3>Optional Binding: if let</h3>
@@ -200,11 +373,12 @@ outerLoop: for i in 1...3 {
         Swift's <code>switch</code> statement is more powerful than in many other languages. It supports pattern matching, ranges, tuples, and doesn't require explicit <code>break</code> statements.
       </p>
 
-      <CodeBlock
+      <DocCBlock
         code={codeExample2}
         lang="swift"
         filename="Switch.swift"
         showLineNumbers={true}
+        showDocumentation={true}
       />
 
       <h3>Key Features of Swift switch</h3>
@@ -221,11 +395,12 @@ outerLoop: for i in 1...3 {
         Loops allow you to execute code repeatedly. Swift provides several loop constructs:
       </p>
 
-      <CodeBlock
+      <DocCBlock
         code={codeExample3}
         lang="swift"
         filename="Loops.swift"
         showLineNumbers={true}
+        showDocumentation={true}
       />
 
       <h3>for-in Loop</h3>
@@ -249,11 +424,12 @@ outerLoop: for i in 1...3 {
         Control transfer statements change the order of execution in your code:
       </p>
 
-      <CodeBlock
+      <DocCBlock
         code={codeExample4}
         lang="swift"
         filename="ControlTransfer.swift"
         showLineNumbers={true}
+        showDocumentation={true}
       />
 
       <ul>
@@ -272,6 +448,11 @@ outerLoop: for i in 1...3 {
           "Control transfer statements (continue, break, return) allow fine-grained control over execution flow.",
         ]}
         mentalModel="Think of control flow as decision trees: conditionals choose paths, loops repeat actions, and control transfer statements redirect execution. Swift's design ensures these constructs are both expressive and safe."
+      />
+
+      <PageNavigation
+        previous={nav?.previous ? { title: nav.previous.title, href: nav.previous.href } : undefined}
+        next={nav?.next ? { title: nav.next.title, href: nav.next.href } : undefined}
       />
     </>
   );

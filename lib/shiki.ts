@@ -9,11 +9,11 @@ export async function highlightCode({
   lang: string;
   theme?: "light" | "dark";
 }) {
-  // Use one-dark-pro theme - we'll override colors with CSS
-  const shikiTheme = theme === "light" ? "github-light" : "one-dark-pro";
+  // Use ayu-dark for dark mode and min-light for light mode
+  const shikiTheme = theme === "light" ? "min-light" : "ayu-dark";
   
   return await codeToHtml(code, {
-    lang,
+    lang: lang || "swift",
     theme: shikiTheme,
   });
 }

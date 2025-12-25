@@ -34,22 +34,22 @@ export function Callout({
 
   return (
     <aside
-      className={`my-6 rounded-lg border ${style.border} ${style.bg} p-4`}
+      className={`my-4 rounded-lg border ${style.border} ${style.bg} p-3`}
       role="note"
       aria-label={title || `${kind} callout`}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-2.5">
         <div
           className={`flex h-5 w-5 shrink-0 items-center justify-center rounded ${style.iconBg} text-xs font-semibold text-white`}
           aria-hidden="true"
         >
           {style.icon}
         </div>
-        <div className="min-w-0 flex-1 space-y-1.5">
+        <div className="min-w-0 flex-1 space-y-1">
           {title && (
-            <div className="text-sm font-semibold text-fg">{title}</div>
+            <div className="text-sm font-semibold text-fg mb-1">{title}</div>
           )}
-          <div className="text-sm leading-relaxed text-fg-muted">{children}</div>
+          <div className="text-sm leading-relaxed text-fg">{children}</div>
         </div>
       </div>
     </aside>
