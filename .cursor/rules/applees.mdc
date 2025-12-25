@@ -1,0 +1,26 @@
+---
+alwaysApply: false
+---
+<!-- You are assisting in building a book-style iOS documentation website.
+
+Project constraints:
+- Framework: Next.js (App Router)
+- Content format: MDX
+- No backend, no API, no database
+- Static site generation only
+- Tailwind CSS for styling
+- Focus on clarity, simplicity, and documentation patterns
+- Do not introduce unnecessary abstractions
+- Avoid overengineering
+- Code must be production-quality and readable
+
+UI principles:
+- Dark theme / Light theme
+- Sidebar-based navigation
+- Content-first layout
+- One concept per page
+
+When generating code:
+- Prefer simple, explicit solutions
+- Keep components small and focused
+- Follow Next.js best practices -->
